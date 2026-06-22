@@ -5,6 +5,7 @@ import BaseButton from '../components/base/BaseButton.vue'
 import ActivityForm from '../components/activities/ActivityForm.vue'
 import ActivityFilters from '../components/activities/ActivityFilters.vue'
 import ActivityList from '../components/activities/ActivityList.vue'
+import SummaryCard from '../components/dashboard/SummaryCard.vue'
 import { useActivityStore } from '../stores/activityStore'
 import { useCategoryStore } from '../stores/categoryStore'
 import { getTodayDate } from '../utils/dates'
@@ -39,6 +40,8 @@ const filteredActivities = computed(() =>
     type: props.lockedType || filters.type,
   }),
 )
+const visiblePending = computed(() => filteredActivities.value.filter((activity) => !activity.completed).length)
+const visibleCompleted = computed(() => filteredActivities.value.filter((activity) => activity.completed).length)
 
 function saveActivity(payload) {
   if (editingActivity.value) {
@@ -90,7 +93,37 @@ watch(
       />
     </BaseCard>
 
+    <div class="metric-grid">
+      <SummaryCard
+        label="Vista filtrada"
+        :value="filteredActivities.length"
+        :detail="filteredActivities.length === 1 ? 'resultado' : 'resultados'"
+        icon="filter"
+      />
+      <SummaryCard
+        label="Por resolver"
+        :value="visiblePending"
+        :detail="visiblePending === 1 ? 'pendiente' : 'pendientes'"
+        tone="cyan"
+        icon="pending"
+      />
+      <SummaryCard
+        label="Cerradas"
+        :value="visibleCompleted"
+        :detail="visibleCompleted === 1 ? 'completada' : 'completadas'"
+        tone="green"
+        icon="done"
+      />
+    </div>
+
     <BaseCard class="stack">
+      <div class="section-heading">
+        <div>
+          <h2>Espacio de trabajo</h2>
+          <p class="muted">Ajusta la vista y opera sobre las actividades visibles.</p>
+        </div>
+      </div>
+
       <ActivityFilters
         :model-value="filters"
         :categories="categoryStore.categories"
