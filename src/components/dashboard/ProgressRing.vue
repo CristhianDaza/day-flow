@@ -8,10 +8,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="progress-ring" :style="{ '--progress': `${value}%` }">
-    <div>
+  <article class="progress-card">
+    <div class="progress-ring" :style="{ '--progress': `${value}%` }">
       <strong>{{ value }}%</strong>
       <span>completado</span>
     </div>
-  </div>
+  </article>
 </template>

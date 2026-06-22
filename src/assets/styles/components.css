@@ -1,10 +1,10 @@
 .base-card,
 .activity-card,
 .summary-card,
-.progress-ring {
+.progress-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: rgba(15, 32, 53, 0.86);
+  background: rgba(14, 29, 48, 0.88);
   box-shadow: var(--shadow);
 }
 
@@ -20,7 +20,7 @@
   padding: 0.65rem 1rem;
   border-radius: var(--radius);
   color: #eff9ff;
-  background: linear-gradient(135deg, var(--primary-strong), #1d4ed8);
+  background: linear-gradient(135deg, var(--primary-strong), #1e40af);
   cursor: pointer;
   font-weight: 750;
   line-height: 1;
@@ -45,7 +45,7 @@
 .base-button--ghost,
 .base-button--danger {
   border: 1px solid var(--border);
-  background: rgba(19, 43, 70, 0.84);
+  background: rgba(20, 41, 64, 0.84);
 }
 
 .base-button--ghost {
@@ -72,7 +72,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
-  background: rgba(7, 17, 31, 0.72);
+  background: rgba(7, 16, 27, 0.72);
   outline: none;
 }
 
@@ -118,6 +118,7 @@
   gap: 0.45rem;
   min-height: 8rem;
   padding: 1rem;
+  border-top: 3px solid rgba(96, 165, 250, 0.38);
 }
 
 .summary-card span {
@@ -139,17 +140,22 @@
   color: var(--green);
 }
 
-.progress-ring {
+.progress-card {
   display: grid;
   min-height: 8rem;
+  padding: 1rem;
   place-items: center;
+  border-top: 3px solid rgba(34, 211, 238, 0.34);
+}
+
+.progress-ring {
+  display: grid;
+  width: min(6.5rem, 100%);
+  aspect-ratio: 1;
   background:
     radial-gradient(closest-side, var(--surface) 72%, transparent 73%),
     conic-gradient(var(--primary) var(--progress), rgba(148, 163, 184, 0.16) 0);
-}
-
-.progress-ring div {
-  display: grid;
+  border-radius: 50%;
   place-items: center;
 }
 
