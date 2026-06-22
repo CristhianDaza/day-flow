@@ -1,10 +1,58 @@
 # DayFlow
 
-DayFlow es una aplicacion web modular para organizar actividades personales del dia a dia: tareas, habitos, recordatorios, rutinas, categorias y registros diarios.
+DayFlow es una aplicacion web para organizar el dia a dia mediante actividades, tareas, habitos, recordatorios, rutinas, categorias y registros diarios.
 
-La primera version esta pensada como una base funcional, limpia y escalable. Guarda la informacion en `localStorage`, pero la arquitectura separa la persistencia en servicios para facilitar una migracion futura a Firebase Firestore.
+La app esta construida con Vue 3, Vite, Vue Router, Pinia y CSS puro. Los datos se guardan localmente en el navegador mediante `localStorage`.
 
-## Stack
+## Desarrollo
+
+### Requisitos
+
+- Node.js instalado.
+- pnpm instalado.
+
+En Windows, si PowerShell bloquea `pnpm`, usa `pnpm.cmd`.
+
+### Instalacion
+
+```bash
+cd D:\DEV\work\dayflow
+pnpm.cmd install
+```
+
+### Levantar el entorno local
+
+```bash
+pnpm.cmd dev
+```
+
+La app queda disponible en:
+
+```txt
+http://localhost:5173
+```
+
+### Generar build
+
+```bash
+pnpm.cmd build
+```
+
+### Previsualizar build
+
+```bash
+pnpm.cmd preview
+```
+
+### Scripts
+
+```txt
+dev      Levanta Vite en modo desarrollo.
+build    Genera el build de produccion.
+preview  Sirve localmente el build generado.
+```
+
+### Stack
 
 - Vue 3
 - Vite
@@ -13,184 +61,36 @@ La primera version esta pensada como una base funcional, limpia y escalable. Gua
 - Pinia
 - CSS puro
 - localStorage
-- pnpm
 
-No usa Tailwind ni librerias UI externas.
-
-## Funcionalidades
-
-- Dashboard con resumen del dia.
-- Crear, editar, eliminar y completar actividades.
-- Tipos de actividad: tarea, habito, recordatorio y rutina.
-- Filtros por fecha, categoria, tipo y estado.
-- Categorias personalizables.
-- Rutinas con actividades internas marcables.
-- Registro diario por fecha.
-- Persistencia local al recargar el navegador.
-- Interfaz responsive en modo oscuro con tonos azules.
-
-## Instalacion
-
-```bash
-cd D:\DEV\work\dayflow
-pnpm.cmd install
-```
-
-En algunos entornos Windows, `pnpm` puede estar bloqueado por la politica de ejecucion de PowerShell. En ese caso usa `pnpm.cmd`.
-
-## Ejecutar en desarrollo
-
-```bash
-pnpm.cmd dev
-```
-
-Luego abre:
-
-```txt
-http://localhost:5173
-```
-
-## Build de produccion
-
-```bash
-pnpm.cmd build
-```
-
-## Preview del build
-
-```bash
-pnpm.cmd preview
-```
-
-## Estructura del proyecto
+### Estructura principal
 
 ```txt
 src/
   main.js
   App.vue
-
-  assets/
-    styles/
-      base.css
-      components.css
-      index.css
-      layout.css
-      variables.css
-
-  components/
-    activities/
-    base/
-    categories/
-    daily-log/
-    dashboard/
-    navigation/
-
-  constants/
-    activityTypes.js
-    categories.js
-
-  layouts/
-    AppLayout.vue
-
   router/
-    index.js
-
-  services/
-    activityService.js
-    categoryService.js
-    dailyLogService.js
-    storageService.js
-
   stores/
-    activityStore.js
-    categoryStore.js
-    dailyLogStore.js
-
+  services/
+  constants/
   utils/
-    dates.js
-    filters.js
-    ids.js
-
+  layouts/
+  components/
   views/
-    ActivitiesView.vue
-    CategoriesView.vue
-    DailyLogView.vue
-    DashboardView.vue
-    HabitsView.vue
-    RemindersView.vue
-    RoutinesView.vue
-    TasksView.vue
+  assets/styles/
 ```
 
-## Arquitectura
+Responsabilidades:
 
-La app esta separada por responsabilidades:
-
-- `views/`: paginas principales conectadas al router.
-- `components/`: componentes reutilizables de UI y dominio.
+- `router/`: rutas de la aplicacion.
 - `stores/`: estado global con Pinia.
-- `services/`: capa de persistencia.
-- `utils/`: funciones puras para fechas, ids y filtros.
-- `constants/`: opciones y valores base de dominio.
-- `assets/styles/`: estilos globales en CSS puro.
+- `services/`: lectura y escritura en `localStorage`.
+- `components/`: componentes reutilizables.
+- `views/`: paginas principales.
+- `assets/styles/`: estilos globales.
 
-`App.vue` se mantiene intencionalmente liviano y solo renderiza el router. El layout principal vive en `layouts/AppLayout.vue`.
+### Persistencia
 
-## Modelo de datos
-
-### Actividad
-
-```js
-{
-  id: string,
-  title: string,
-  description: string,
-  type: "task" | "habit" | "reminder" | "routine",
-  category: string,
-  priority: "low" | "medium" | "high",
-  date: string,
-  time: string,
-  repeat: "none" | "daily" | "weekly" | "monthly" | "custom",
-  completed: boolean,
-  routineItems: [
-    {
-      id: string,
-      title: string,
-      completed: boolean
-    }
-  ],
-  createdAt: string,
-  updatedAt: string
-}
-```
-
-### Categoria
-
-```js
-{
-  id: string,
-  name: string,
-  color: string,
-  createdAt: string,
-  updatedAt: string
-}
-```
-
-### Registro diario
-
-```js
-{
-  id: string,
-  date: string,
-  content: string,
-  createdAt: string,
-  updatedAt: string
-}
-```
-
-## Persistencia local
-
-La informacion se guarda en `localStorage` con estas claves:
+DayFlow guarda informacion en `localStorage` usando estas claves:
 
 ```txt
 dayflow.activities
@@ -198,18 +98,152 @@ dayflow.categories
 dayflow.dailyLogs
 ```
 
-Los servicios actuales son:
+Los servicios que administran esa persistencia estan en:
 
-- `activityService`
-- `categoryService`
-- `dailyLogService`
-- `storageService`
+```txt
+src/services/activityService.js
+src/services/categoryService.js
+src/services/dailyLogService.js
+src/services/storageService.js
+```
 
-Esta separacion permite cambiar la implementacion interna de persistencia sin reescribir las vistas ni los componentes.
+## Uso de la app
 
-## Categorias iniciales
+### Navegacion general
 
-DayFlow crea estas categorias al primer uso:
+La navegacion principal esta en el sidebar en escritorio y en la barra inferior en movil.
+
+Secciones disponibles:
+
+- Dashboard
+- Actividades
+- Habitos
+- Tareas
+- Recordatorios
+- Rutinas
+- Categorias
+- Registro diario
+
+### Dashboard
+
+El Dashboard muestra el estado del dia actual:
+
+- Plan del dia.
+- Actividades por resolver.
+- Actividades cerradas.
+- Avance general.
+- Actividades de hoy.
+- Proximos recordatorios.
+
+Desde el Dashboard tambien se puede crear una nueva actividad.
+
+### Crear una actividad
+
+Para crear una actividad:
+
+1. Entrar a `Dashboard` o `Actividades`.
+2. Presionar `Nueva actividad`.
+3. Completar el formulario.
+4. Guardar.
+
+Campos principales:
+
+- `Titulo`: nombre de la actividad.
+- `Descripcion`: detalle opcional.
+- `Tipo`: tarea, habito, recordatorio o rutina.
+- `Categoria`: grupo al que pertenece.
+- `Prioridad`: baja, media o alta.
+- `Fecha`: dia asociado.
+- `Hora`: horario opcional.
+- `Repeticion`: sin repeticion, diaria, semanal, mensual o personalizada.
+
+### Editar una actividad
+
+Para editar:
+
+1. Buscar la actividad en la lista.
+2. Presionar `Editar`.
+3. Modificar los campos necesarios.
+4. Guardar los cambios.
+
+### Eliminar una actividad
+
+Para eliminar:
+
+1. Buscar la actividad.
+2. Presionar `Eliminar`.
+
+La actividad se elimina de la lista y de `localStorage`.
+
+### Completar una actividad
+
+Cada actividad tiene una accion para marcarla como completada.
+
+Cuando una actividad esta completada:
+
+- Aparece con estado `Completada`.
+- Cuenta dentro del avance del dia si pertenece a la fecha actual.
+- Puede volver a abrirse con la accion `Reabrir`.
+
+### Filtrar actividades
+
+En la vista `Actividades` y en las vistas por tipo se pueden usar filtros.
+
+Filtros disponibles:
+
+- Fecha.
+- Categoria.
+- Tipo.
+- Estado.
+
+Los filtros pueden combinarse. Por ejemplo: ver solo tareas pendientes de una categoria especifica para una fecha concreta.
+
+### Habitos
+
+La vista `Habitos` muestra actividades de tipo `habit`.
+
+Sirve para seguimientos repetibles como:
+
+- Estudiar.
+- Hacer ejercicio.
+- Leer.
+- Meditar.
+- Cualquier habito personalizado.
+
+### Tareas
+
+La vista `Tareas` muestra actividades de tipo `task`.
+
+Sirve para pendientes concretos con prioridad y fecha.
+
+### Recordatorios
+
+La vista `Recordatorios` muestra actividades de tipo `reminder`.
+
+Si un recordatorio tiene fecha y hora anteriores al momento actual y no esta completado, se muestra como vencido visualmente.
+
+### Rutinas
+
+La vista `Rutinas` muestra actividades de tipo `routine`.
+
+Al crear una rutina se pueden escribir varias actividades internas, una por linea.
+
+Ejemplo:
+
+```txt
+Tomar agua
+Organizar escritorio
+Leer 20 minutos
+Planear el dia
+```
+
+Cada item interno puede marcarse como completado. Cuando todos los items estan completados, la rutina queda completada.
+
+### Categorias
+
+La vista `Categorias` permite administrar los grupos usados para clasificar actividades.
+
+Categorias iniciales:
 
 - Salud
 - Estudio
@@ -219,105 +253,28 @@ DayFlow crea estas categorias al primer uso:
 - Ocio
 - Otro
 
-Si se elimina una categoria usada por actividades existentes, esas actividades se reasignan a `Otro`.
+Acciones disponibles:
 
-## Modulos
+- Crear categoria.
+- Editar categoria.
+- Eliminar categoria.
 
-### Dashboard
-
-Muestra:
-
-- Total de actividades del dia.
-- Actividades pendientes.
-- Actividades completadas.
-- Porcentaje de progreso.
-- Proximos recordatorios.
-
-### Actividades
-
-Vista principal para administrar cualquier tipo de actividad:
-
-- Crear.
-- Editar.
-- Eliminar.
-- Marcar como completada.
-- Filtrar por fecha, categoria, tipo y estado.
-
-### Habitos
-
-Vista enfocada en actividades con `type: "habit"`.
-
-### Tareas
-
-Vista enfocada en actividades con `type: "task"`.
-
-### Recordatorios
-
-Vista enfocada en actividades con `type: "reminder"`. El estado vencido se calcula visualmente segun fecha y hora.
-
-### Rutinas
-
-Vista enfocada en actividades con `type: "routine"`. Una rutina puede incluir varias actividades internas, una por linea en el formulario.
-
-### Categorias
-
-Permite crear, editar y eliminar categorias personalizadas.
+Si se elimina una categoria que esta siendo usada, sus actividades pasan a la categoria `Otro`.
 
 ### Registro diario
 
-Permite guardar notas asociadas a una fecha.
+La vista `Registro diario` permite escribir notas asociadas a una fecha.
 
-## Reglas de negocio
+Para usarlo:
 
-- `title`, `type`, `category` y `date` son obligatorios para crear una actividad.
-- `time` es opcional, aunque se recomienda para recordatorios.
-- Las repeticiones se guardan como dato, pero no generan ocurrencias automaticas en esta version.
-- Las rutinas se completan automaticamente cuando todos sus items internos estan completados.
-- Los filtros pueden combinarse entre si.
-- El Dashboard calcula el progreso segun actividades de la fecha actual.
+1. Seleccionar una fecha.
+2. Escribir el registro del dia.
+3. Presionar `Guardar registro`.
 
-## Migracion futura a Firebase
+El registro queda guardado en el navegador y puede consultarse nuevamente seleccionando la misma fecha.
 
-La estructura sugerida para Firestore es:
+### Datos locales
 
-```txt
-users/{userId}/activities/{activityId}
-users/{userId}/categories/{categoryId}
-users/{userId}/dailyLogs/{dailyLogId}
-```
+Toda la informacion se guarda en el navegador actual.
 
-Para migrar:
-
-1. Agregar Firebase SDK.
-2. Crear configuracion Firebase en `src/services/firebaseClient.js`.
-3. Reemplazar la implementacion interna de los servicios actuales por operaciones Firestore.
-4. Mantener los stores y componentes con la misma interfaz publica.
-5. Agregar Firebase Auth cuando la app necesite usuarios reales y sincronizacion multi-dispositivo.
-
-## Scripts disponibles
-
-```bash
-pnpm.cmd dev
-pnpm.cmd build
-pnpm.cmd preview
-```
-
-## Verificacion manual recomendada
-
-Despues de levantar la app:
-
-1. Crear una actividad tipo tarea.
-2. Crear una actividad tipo habito.
-3. Crear un recordatorio con fecha y hora.
-4. Crear una rutina con varias lineas.
-5. Marcar actividades como completadas.
-6. Editar y eliminar una actividad.
-7. Filtrar por fecha, categoria, tipo y estado.
-8. Crear una categoria nueva.
-9. Editar o eliminar una categoria.
-10. Guardar una nota en el registro diario.
-11. Recargar el navegador y confirmar que los datos persisten.
-
-## Estado actual
-
-DayFlow es una primera version local, funcional y monousuario. Esta lista para evolucionar hacia autenticacion, sincronizacion remota, notificaciones reales y generacion automatica de recurrencias.
+Si se borra el almacenamiento del navegador, tambien se borran los datos de DayFlow.
