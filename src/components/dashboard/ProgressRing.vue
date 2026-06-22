@@ -9,9 +9,12 @@ defineProps({
 
 <template>
   <article class="progress-card">
-    <div class="progress-ring" :style="{ '--progress': `${value}%` }">
+    <div class="progress-card__label">
+      <span>Avance</span>
       <strong>{{ value }}%</strong>
-      <span>completado</span>
+    </div>
+    <div class="progress-ring" :style="{ '--progress': `${value}%` }">
+      <span />
     </div>
   </article>
 </template>

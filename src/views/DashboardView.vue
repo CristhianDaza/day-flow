@@ -64,9 +64,26 @@ function editActivity(activity) {
     </BaseCard>
 
     <div class="dashboard-grid">
-      <SummaryCard label="Total hoy" :value="stats.total" />
-      <SummaryCard label="Pendientes" :value="stats.pending" tone="cyan" />
-      <SummaryCard label="Completadas" :value="stats.completed" tone="green" />
+      <SummaryCard
+        label="Plan del dia"
+        :value="stats.total"
+        :detail="stats.total === 1 ? 'actividad' : 'actividades'"
+        icon="plan"
+      />
+      <SummaryCard
+        label="Por resolver"
+        :value="stats.pending"
+        :detail="stats.pending === 1 ? 'pendiente' : 'pendientes'"
+        tone="cyan"
+        icon="pending"
+      />
+      <SummaryCard
+        label="Cerradas"
+        :value="stats.completed"
+        :detail="stats.completed === 1 ? 'completada' : 'completadas'"
+        tone="green"
+        icon="done"
+      />
       <ProgressRing :value="stats.progress" />
     </div>
 
