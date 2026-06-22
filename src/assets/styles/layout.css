@@ -100,10 +100,14 @@
   place-items: center;
   border: 1px solid rgba(126, 151, 184, 0.16);
   border-radius: 6px;
-  color: #7f92ab;
   background: rgba(10, 21, 35, 0.72);
-  font-size: 0.68rem;
-  font-weight: 850;
+}
+
+.sidebar__marker .metric-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: #7f92ab;
+  stroke-width: 2;
 }
 
 .sidebar__nav a:hover,
@@ -115,9 +119,12 @@
 }
 
 .sidebar__nav a.is-active .sidebar__marker {
-  color: #eff9ff;
   border-color: rgba(96, 165, 250, 0.42);
   background: linear-gradient(145deg, #1d4ed8, #0369a1);
+}
+
+.sidebar__nav a.is-active .sidebar__marker .metric-icon {
+  stroke: #eff9ff;
 }
 
 .sidebar__status {

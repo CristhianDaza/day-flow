@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import MetricIcon from '../dashboard/MetricIcon.vue'
 import { useActivityStore } from '../../stores/activityStore'
 import { formatDisplayDate, getTodayDate } from '../../utils/dates'
 
@@ -12,23 +13,23 @@ const sections = [
   {
     label: 'Hoy',
     links: [
-      { to: '/', label: 'Dashboard', marker: '01' },
-      { to: '/daily-log', label: 'Registro diario', marker: '02' },
+      { to: '/', label: 'Dashboard', icon: 'dashboard' },
+      { to: '/daily-log', label: 'Registro diario', icon: 'log' },
     ],
   },
   {
     label: 'Planificacion',
     links: [
-      { to: '/activities', label: 'Actividades', marker: '03' },
-      { to: '/habits', label: 'Habitos', marker: '04' },
-      { to: '/tasks', label: 'Tareas', marker: '05' },
-      { to: '/reminders', label: 'Recordatorios', marker: '06' },
-      { to: '/routines', label: 'Rutinas', marker: '07' },
+      { to: '/activities', label: 'Actividades', icon: 'activity' },
+      { to: '/habits', label: 'Habitos', icon: 'habit' },
+      { to: '/tasks', label: 'Tareas', icon: 'task' },
+      { to: '/reminders', label: 'Recordatorios', icon: 'reminder' },
+      { to: '/routines', label: 'Rutinas', icon: 'routine' },
     ],
   },
   {
     label: 'Sistema',
-    links: [{ to: '/categories', label: 'Categorias', marker: '08' }],
+    links: [{ to: '/categories', label: 'Categorias', icon: 'category' }],
   },
 ]
 
@@ -59,7 +60,9 @@ function isActive(path) {
           class="sidebar__link"
           :class="{ 'is-active': isActive(link.to) }"
         >
-          <span class="sidebar__marker">{{ link.marker }}</span>
+          <span class="sidebar__marker" aria-hidden="true">
+            <MetricIcon :name="link.icon" />
+          </span>
           <span>{{ link.label }}</span>
         </RouterLink>
       </section>
